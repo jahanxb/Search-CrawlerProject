@@ -5,7 +5,7 @@ $action = $_GET["action"];
 $query = $_GET["q"];
 
 if ($action == "search") {
-    $string = file_get_contents("BookDataset.json");
+    $string = file_get_contents("BookDatasetLarge.json");
     $data = json_decode($string);
     $matchingBooks = array();
 
