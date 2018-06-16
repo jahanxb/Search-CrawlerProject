@@ -1,12 +1,17 @@
+<!DOCTYPE html>
 <html>
 
 
 <head>
 
     <title>My Search engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
           crossorigin="anonymous">
+          <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -139,7 +144,7 @@
 
 
 <div class="booksContainer" >
-<table style="margin: 0px auto;">
+<table style="margin: 0px auto;" border="2">
     <thead>
         <th style="width: 12.5%">ID</th>
         <th style="width: 12.5%">Title</th>
@@ -149,6 +154,10 @@
         <th style="width: 12.5%">Category</th>
         <th style="width: 12.5%">Price</th>
         <th style="width: 12.5%">Downloads</th>
+        <th style="width: 12.5%">Reviews (Amazon)</th>
+        <th style="width: 12.5%">Click Here to Read the Book (Bonus Point)</th>
+
+
     </thead>
     <tbody id="tableBody" style="background: white">
 
@@ -164,7 +173,7 @@
 
 <script>
     $('.searchMe').click(function () {
-        debugger;
+      //  debugger;
         let q = $("#query").val();
         $.ajax({
             url: "api.php?action=search&q=" + q,
@@ -184,6 +193,13 @@
                     html+='<td>'+item['Category']+'</td>';
                     html+='<td>'+item['Price']+'</td>';
                     html+='<td>'+item['Downloads']+'</td>';
+                    html+='<td><ul>';
+                    for(j=0;j<item.reviews.length;j++){
+                        html+='<hr><li><b>Username: </b>'+item.reviews[j].reviewerName+'<br> <b>Remarks: </b>'+item.reviews[j].summary+'<br> <b>Full Comment: </b>'+'<input placeholder="Move cursor Here to read full comments" title="'+item.reviews[j].reviewText+'readonly"></input></li>';
+                    }
+                    html+='</ul></td>';
+                    html+='<td>'+'<a href="ebooks/'+'book_'+item['EBook-No.']+'.txt'+'" target="_blank">'+'Click Here to Read the Book'+'</a></td>';
+
                     html+='</tr>';
                 }
                 $("#tableBody").html(html);
@@ -191,6 +207,13 @@
         })
 
     });
+</script>
+<script type="text/javascript">
+    $( function() {
+    $( document ).tooltip();
+  } );
+
+
 </script>
 
 </body>
