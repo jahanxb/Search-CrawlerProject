@@ -5,28 +5,54 @@ $action = $_GET["action"];
 $query = $_GET["q"];
 
 if ($action == "search") {
-    $string = file_get_contents("BookDatasetLarge.json");
+   // $string = file_get_contents("BookDataset.json");
+     $string = file_get_contents("BookDatasetLarge.json");
+
+    $reviews = file_get_contents("books_review.json");
+
+    $reviews = json_decode($reviews);
+
+
     $data = json_decode($string);
     $matchingBooks = array();
 
     foreach ($data as $book) {
+            $var_new= rand(0,Count($reviews)-1);
+           $var_new_1= rand(0,Count($reviews)-1);
+    $var_new_2= rand(0,Count($reviews)-1);
+    $var_new_arr= array();
+    $var_new_arr[]=$reviews[$var_new];
+    $var_new_arr[]=$reviews[$var_new_1];
+    $var_new_arr[]=$reviews[$var_new_2];
+   
+            $selected_review= $var_new_arr;
+    
+           // print_r($selected_review);
+           // exit;
+
         if (isset($book->Author)) {
             if (wild_compare('*' . $query . '*', $book->Author)) {
+                    $book->reviews=$selected_review;
                     $matchingBooks[] = $book;
             }
         }
         if (isset($book->Category)) {
+
             if (wild_compare('*' . $query . '*', $book->Category)) {
+                $book->reviews=$selected_review;
                 $matchingBooks[] = $book;
+
             }
         }
         if (isset($book->Subject)) {
             if (wild_compare('*' . $query . '*', $book->Subject)) {
+                $book->reviews=$selected_review;
                 $matchingBooks[] = $book;
             }
         }
         if (isset($book->Title)) {
             if (wild_compare('*' . $query . '*', $book->Title)) {
+                $book->reviews=$selected_review;
                 $matchingBooks[] = $book;
             }
         }
